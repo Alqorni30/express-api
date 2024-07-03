@@ -14,8 +14,8 @@ app.use(cors({ origin: URL }));
 
 app.use(express.json());
 
-app.get("/*", (req, res) => {
-  res.send("Welcome to my API Bayo!!");
+app.get("/api", (req, res) => {
+  res.send("Welcome to my API Bayo!");
 });
 
 const productController = require("./product/product.controller");

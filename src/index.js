@@ -6,8 +6,8 @@ const app = express();
 
 dotenv.config();
 
-const URL = process.env.URL_LOCAL;
-// const URL = process.env.URL_PRODUCTION;
+// const URL = process.env.URL_LOCAL;
+const URL = process.env.URL_PRODUCTION;
 const PORT = process.env.PORT;
 
 app.use(cors({ origin: URL }));

@@ -7,14 +7,14 @@ const app = express();
 dotenv.config();
 
 // const URL = process.env.URL_LOCAL;
-const URL = process.env.URL_PRODUCTION;
-const PORT = process.env.PORT;
+const URL = process.env.URL_PRODUCTION || process.env.URL_LOCAL;
+const PORT = process.env.PORT_PRODUCTION || process.env.PORT_LOCAL;
 
 app.use(cors({ origin: URL }));
 
 app.use(express.json());
 
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Welcome to my API Bayo");
 });
 

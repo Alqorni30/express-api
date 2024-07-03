@@ -6,10 +6,10 @@ const app = express();
 
 dotenv.config();
 
-const URL = process.env.URL_PRODUCTION || process.env.URL_LOCAL;
+// const URL = process.env.URL_PRODUCTION || process.env.URL_LOCAL;
 const PORT = process.env.PORT_PRODUCTION || process.env.PORT_LOCAL;
 
-app.use(cors({ origin: URL }));
+app.use(cors({ origin: "*" }));
 
 app.use(express.json());
 

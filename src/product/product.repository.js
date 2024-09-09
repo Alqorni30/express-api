@@ -46,7 +46,7 @@ const deleteProduct = async (id) => {
 const editProduct = async (id, productData) => {
   const product = await prisma.product.update({
     where: {
-      id: parseInt(id),
+      id,
     },
     data: {
       description: productData.description,

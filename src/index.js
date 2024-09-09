@@ -18,6 +18,9 @@ app.get("/api", (req, res) => {
 });
 
 const productController = require("./product/product.controller");
+// const categoryController = require("./category/category.controller");
+
+// app.use("/kategori", categoryController);
 
 app.use("/products", productController);
 

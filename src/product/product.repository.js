@@ -27,6 +27,7 @@ const insertProduct = async (productData) => {
       description: productData.description,
       image: productData.image,
       price: productData.price,
+      kategoriId: productData.kategoriId,
     },
   });
 
@@ -52,6 +53,7 @@ const editProduct = async (id, productData) => {
       image: productData.image,
       name: productData.name,
       price: productData.price,
+      kategoriId: productData.kategoriId,
     },
   });
 

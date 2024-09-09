@@ -1,9 +1,4 @@
-// Layer untuk handle request dan response
-// Biasanya juga handle validasi body
-
 const express = require("express");
-const prisma = require("../db");
-
 const {
   getAllProducts,
   getProductById,
@@ -15,85 +10,120 @@ const {
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const products = await getAllProducts();
-
-  res.send(products);
+  try {
+    const products = await getAllProducts();
+    
+    // Kirim respon dengan status, error, dan data
+    res.status(200).json({
+      statusCode: 200,
+      message: "Success",
+      data: products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      statusCode: 500,
+      error: error.message,
+      data: null,
+    });
+  }
 });
 
 router.get("/:id", async (req, res) => {
   try {
     const productId = parseInt(req.params.id);
-    const product = await getProductById(parseInt(productId));
+    const product = await getProductById(productId);
 
-    res.send(product);
-  } catch (err) {
-    res.status(400).send(err.message);
+    res.status(200).json({
+      statusCode: 200,
+      message: "Success",
+      data: product,
+    });
+  } catch (error) {
+    res.status(400).json({
+      statusCode: 400,
+      error: error.message,
+      data: null,
+    });
   }
 });
 
 router.post("/", async (req, res) => {
   try {
     const newProductData = req.body;
-
     const product = await createProduct(newProductData);
 
-    res.send({
+    res.status(201).json({
+      statusCode: 201,
+      message: "Product created successfully",
       data: product,
-      message: "create product success",
     });
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json({
+      statusCode: 400,
+      error: error.message,
+      data: null,
+    });
   }
 });
 
 router.delete("/:id", async (req, res) => {
   try {
-    const productId = req.params.id; // string
+    const productId = parseInt(req.params.id);
+    await deleteProductById(productId);
 
-    await deleteProductById(parseInt(productId));
-
-    res.send("product deleted");
+    res.status(200).json({
+      statusCode: 200,
+      message: "Success",
+      data: `Product with ID ${productId} deleted successfully`,
+    });
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json({
+      statusCode: 400,
+      error: error.message,
+      data: null,
+    });
   }
 });
 
 router.put("/:id", async (req, res) => {
-  const productId = req.params.id;
-  const productData = req.body;
+  try {
+    const productId = parseInt(req.params.id);
+    const productData = req.body;
 
-  if (
-    !(
-      productData.image &&
-      productData.description &&
-      productData.name &&
-      productData.price
-    )
-  ) {
-    return res.status(400).send("Some fields are missing");
+    const product = await editProductById(productId, productData);
+
+    res.status(200).json({
+      statusCode: 200,
+      message: "Success",
+      data: product,
+    });
+  } catch (error) {
+    res.status(400).json({
+      statusCode: 400,
+      error: error.message,
+      data: null,
+    });
   }
-
-  const product = await editProductById(parseInt(productId), productData);
-
-  res.send({
-    data: product,
-    message: "edit product success",
-  });
 });
 
 router.patch("/:id", async (req, res) => {
   try {
-    const productId = req.params.id;
+    const productId = parseInt(req.params.id);
     const productData = req.body;
 
-    const product = await editProductById(parseInt(productId), productData);
+    const product = await editProductById(productId, productData);
 
-    res.send({
+    res.status(200).json({
+      statusCode: 200,
+      error: null,
       data: product,
-      message: "edit product success",
     });
-  } catch (err) {
-    res.status(400).send(err.message);
+  } catch (error) {
+    res.status(400).json({
+      statusCode: 400,
+      error: error.message,
+      data: null,
+    });
   }
 });
 
